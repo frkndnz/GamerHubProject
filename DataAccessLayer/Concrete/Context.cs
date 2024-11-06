@@ -15,6 +15,6 @@ namespace DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("server=FURKAN\\SQLFURKAN;database=WebProjectDB;integrated security=true;TrustServerCertificate=True;");
         }
         
-        
+        DbSet<Game> Games{get;set;}
     }
 }

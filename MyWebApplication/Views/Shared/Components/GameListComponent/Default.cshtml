@@ -1,2 +1,8 @@
-
-<h3>Vehicle List</h3>
+@using DataAccessLayer.ApiModel;
+@model IEnumerable<ApiGame>
+<ul>
+    @foreach (var game in Model)
+    {
+        <li>@game.Name</li>
+    }
+</ul>
