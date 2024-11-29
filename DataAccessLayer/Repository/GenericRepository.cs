@@ -23,7 +23,8 @@ namespace DataAccessLayer.Repository
 
         public List<T> GetList()
         {
-            throw new NotImplementedException();
+            using var c =new Context();
+            return c.Set<T>().ToList();
         }
 
         public List<T> GetListByFilter(Expression<Func<T, bool>> t)

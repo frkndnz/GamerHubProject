@@ -11,6 +11,6 @@ namespace EntityLayer.Concrete
         public string? Name { get; set; }
         public DateTime Released { get; set; }
         public float Rating { get; set; }
-       // public string? Genre { get; set; }
+        public string? Genre { get; set; }
     }
 }

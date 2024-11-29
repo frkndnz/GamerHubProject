@@ -33,9 +33,9 @@ namespace BusinessLayer.Concrete
             throw new NotImplementedException();
         }
 
-        public List<T> TGetList()
+        public  List<T> TGetList()
         {
-            throw new NotImplementedException();
+            return _genericDal.GetList();
         }
 
         public void TUpdate(T t)

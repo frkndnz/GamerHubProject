@@ -4,6 +4,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">HomePageBody</h1>
-    @await Component.InvokeAsync("GameListComponent")
+    <h1 class="display-4">Game List</h1>
+    <!-- Search Form -->
+    <div class="container col-md-3 mt-3">
+     <form method="get" asp-controller="Home" asp-action="Index" class="d-flex" >
+        <input type="text" name="search" class="form-control mr-2" placeholder="Search Game" >
+        <button type="submit" class="btn btn-warning " style=" margin-left: 10;">Ara</button>
+    </form>
+    </div>
+    @await Component.InvokeAsync("GameListComponent",ViewBag.search)
 </div>

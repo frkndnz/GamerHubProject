@@ -12,7 +12,7 @@ namespace DataAccessLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=FURKAN\\SQLFURKAN;database=WebProjectDB;integrated security=true;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("server=localhost;database=GamerHubDB;integrated security=true;TrustServerCertificate=True;");
         }
         
         DbSet<Game> Games{get;set;}

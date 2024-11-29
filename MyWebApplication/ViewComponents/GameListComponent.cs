@@ -11,17 +11,16 @@ namespace MyWebApplication.ViewComponents
 {
     public class GameListComponent : ViewComponent
     {
-        GameManager gameManager= new GameManager(new EfGameDal(),new GameApiService(new HttpClient()));
-        // private readonly IApiService _apiService;
+        GameManager gameManager= new GameManager(new EfGameDal());
+        
 
-        // public GameListComponent(IApiService apiService)
-        // {
-        //     _apiService = apiService;
-        // }
-
-        public async Task<IViewComponentResult> InvokeAsync()
+        public  IViewComponentResult Invoke(string search)
         {
-            var games=await gameManager.ApiService.GetGamesFromApiAsync();
+            var games= gameManager.TGetList();
+            if(!string.IsNullOrEmpty(search))
+            {
+                games=games.Where(g=>g.Name!.Contains(search,StringComparison.OrdinalIgnoreCase)).ToList();
+            }
             return View(games);
         }
     }

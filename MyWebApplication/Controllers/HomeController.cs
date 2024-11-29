@@ -8,8 +8,9 @@ namespace MyWebApplication.Controllers;
 public class HomeController : Controller
 {
     [AllowAnonymous]
-    public IActionResult Index()
+    public IActionResult Index(string search)
     {
+        ViewBag.search=search;
         return View();
     }
 

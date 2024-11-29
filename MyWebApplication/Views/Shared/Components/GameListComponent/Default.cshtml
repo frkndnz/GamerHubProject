@@ -1,8 +1,21 @@
-@using DataAccessLayer.ApiModel;
-@model IEnumerable<ApiGame>
+@model IEnumerable<Game>
 <ul>
-    @foreach (var game in Model)
-    {
-        <li>@game.Name</li>
-    }
+    <!-- Oyunlar Listesi -->
+    <div class="container mt-5">
+        <div class="row">
+            @foreach (var game in Model)
+            {
+                <div class="col-md-3 ">
+                    <div class="card bg-success text-white " >
+                        <div class="card-body">
+                            <h4 class="card-title">@game.Name</h4>
+                            <h6 class="card-text">Genre : @game.Genre</h6>
+                            <h6 class="card-text">Rating : @game.Rating</h6>
+                            <h6 class="card-text">Released @game.Released.ToShortDateString()</h6>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </ul>
