@@ -34,7 +34,9 @@ namespace DataAccessLayer.Repository
 
         public void Insert(T t)
         {
-            throw new NotImplementedException();
+            using var c =new Context();
+            c.Add(t);
+            
         }
 
         public void Update(T t)
