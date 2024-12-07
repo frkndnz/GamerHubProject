@@ -1,0 +1,8 @@
+@{
+    ViewData["Title"] = "Index";
+    Layout="_AdminLayout";
+}
+
+<div>
+    @await Component.InvokeAsync("GameListComponent",ViewBag.search)
+</div>
