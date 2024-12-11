@@ -1,26 +1,31 @@
 @model IEnumerable<Game>
 
-<ul>
-	<!-- Oyunlar Listesi -->
-	<div class="container mt-5">
-		<div class="row">
-			@foreach (var game in Model)
-			{
-				<div class="col-md-3 ">
-					<div class="card bg-success text-white ">
-						<div class="card-body">
-							<h4 class="card-title">@game.Name</h4>
-							@foreach (var genre in @game.Genres)
-							{
-								<h6 class="card-text">Genre : @genre.Name </h6>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Oyunlarým</h2>
+    <div class="row g-4">
+        @foreach (var game in Model)
+        {
+            <div class="col-md-3">
+                <div class="card text-white bg-dark  shadow-sm h-100">
+                    @* <img src="@game.CoverImageUrl" class="card-img-top" alt="@game.Name Cover Image"> *@
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@game.Name</h5>
+                        <p class="card-text mb-1"><strong>Rating:</strong> @game.Rating</p>
+                        <p class="card-text mb-1"><strong>Released:</strong> @game.Released.ToShortDateString()</p>
+                        <div>
+                            <strong>Genres:</strong>
+                            <ul class="list-unstyled">
+                                @foreach (var genre in game.Genres)
+                                {
+                                    <li>@genre.Name</li>
+                                }
+                            </ul>
+                        </div>
+                        <a href="/games/details/@game.Id" class="btn btn-light mt-auto">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
-							}
-							<h6 class="card-text">Rating : @game.Rating</h6>
-							<h6 class="card-text">Released @game.Released.ToShortDateString()</h6>
-						</div>
-					</div>
-				</div>
-			}
-		</div>
-	</div>
-</ul>

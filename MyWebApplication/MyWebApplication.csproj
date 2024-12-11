@@ -16,6 +16,9 @@
     <Folder Include="ViewComponents\" />
     <Folder Include="Views\Shared\DefaultLayoutPartials\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\js\Areas\Admin\admin.js" />
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>

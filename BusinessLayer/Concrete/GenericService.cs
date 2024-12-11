@@ -36,7 +36,7 @@ namespace BusinessLayer.Concrete
 
         public void TDelete(T t)
         {
-            throw new NotImplementedException();
+            _genericRepository.Delete(t);
         }
 
         public  List<T> TGetList()

@@ -21,7 +21,8 @@ namespace DataAccessLayer.Repository
 
         public void Delete(T t)
         {
-            throw new NotImplementedException();
+            _context.Remove(t);
+            _context.SaveChanges();
         }
 
         public T? GetById(int id)

@@ -124,6 +124,22 @@ namespace MyWebApplication.Areas.Admin.Controllers
             ViewBag.Genres = values;
             return View(model);
         }
-        
+
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var game = _gameManager.GetById(id);
+            if (game != null) {
+                _gameManager.TDelete(game);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("oyun bulunamadý !");
+            }
+        }
+
+       
     }
 }

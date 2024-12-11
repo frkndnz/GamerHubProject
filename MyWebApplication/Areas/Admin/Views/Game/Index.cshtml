@@ -29,7 +29,7 @@
 					<td>@game.Released.ToShortDateString()</td>
 					<td>
 						<a class="btn btn-primary" asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-id="@game.Id">Düzenle</a>
-						<a class="btn btn-warning">Sil</a>
+						<a class="btn btn-warning" onclick="deleteGame(@game.Id)">Sil</a>
 					</td>
 					
 				</tr>
@@ -37,3 +37,4 @@
 		</tbody>
 	</table>
 </div>
+
