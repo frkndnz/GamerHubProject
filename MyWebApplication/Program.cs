@@ -1,13 +1,23 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.Repository;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddLogging(configure =>
+{
+    configure.AddConsole(); // Console logger
+    configure.AddDebug();  // Debug logger
+    
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -31,6 +41,13 @@ builder.Services.AddMvc(config=>{
 
 });
 
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+builder.Services.AddScoped(typeof(GameManager));
+builder.Services.AddScoped(typeof(GenreManager));
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,12 +66,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
-    );
-app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
     );
 
 app.Run();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
@@ -10,22 +11,27 @@ namespace BusinessLayer.Concrete
 {
     public class GenericService<T> : IGenericService<T> where T:class
     {
-        private readonly IGenericDal<T> _genericDal;
+        private readonly IGenericRepository<T> _genericRepository;
 
-        public GenericService(IGenericDal<T> genericDal)
+        public GenericService(IGenericRepository<T> genericDal)
         {
-            _genericDal = genericDal;
+            _genericRepository = genericDal;
+        }
+
+        public IEnumerable<T> GetAllWithInclude(Expression<Func<T, object>> includeProperty)
+        {
+            return _genericRepository.GetAllWithInclude(includeProperty);
         }
 
         public T? GetById(int id)
         {
-            return _genericDal.GetById(id);
+            return _genericRepository.GetById(id);
             
         }
 
         public void TAdd(T t)
         {
-            _genericDal.Insert(t);
+            _genericRepository.Insert(t);
         }
 
         public void TDelete(T t)
@@ -35,12 +41,12 @@ namespace BusinessLayer.Concrete
 
         public  List<T> TGetList()
         {
-            return _genericDal.GetList();
+            return _genericRepository.GetList();
         }
 
         public void TUpdate(T t)
         {
-            throw new NotImplementedException();
+            _genericRepository.Update(t);
         }
     }
 }

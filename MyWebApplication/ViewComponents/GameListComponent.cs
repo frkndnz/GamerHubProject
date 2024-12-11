@@ -11,12 +11,17 @@ namespace MyWebApplication.ViewComponents
 {
     public class GameListComponent : ViewComponent
     {
-        GameManager gameManager= new GameManager(new EfGameDal());
-        
+        private readonly GameManager _gameManager;
+
+        public GameListComponent(GameManager gameManager)
+        {
+            _gameManager = gameManager;
+        }
 
         public  IViewComponentResult Invoke(string search)
         {
-            var games= gameManager.TGetList();
+            var games= _gameManager.GetAllWithInclude(g=>g.Genres);
+            
             if(!string.IsNullOrEmpty(search))
             {
                 games=games.Where(g=>g.Name!.Contains(search,StringComparison.OrdinalIgnoreCase)).ToList();

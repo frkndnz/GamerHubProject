@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IGenericDal<T>
+    public interface IGenericRepository<T>
     {
         void Insert(T t);
         void Delete(T t);
@@ -17,5 +17,6 @@ namespace DataAccessLayer.Abstract
         T? GetById(int id);
 
         List<T> GetListByFilter(Expression<Func<T,bool>> t);
+        IEnumerable<T> GetAllWithInclude(Expression<Func<T, object>> includeProperty);
     }
 }

@@ -11,9 +11,11 @@ namespace BusinessLayer.Concrete
 {
     public class GameManager : GenericService<Game>
     {
-        public GameManager(IGenericDal<Game> genericDal) : base(genericDal)
+        private readonly IGenericRepository<Game> _repository;
+        public GameManager(IGenericRepository<Game> repository) : base(repository) 
         {
-            
+            _repository = repository;
         }
+        
     }
 }

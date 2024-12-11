@@ -1,0 +1,57 @@
+﻿@using MyWebApplication.Areas.Admin.ViewModel
+
+@model AddGameViewModel
+@{
+	ViewData["Title"] = "Index";
+	Layout = "_AdminLayout";
+
+	var genreList = ViewBag.Genres as IEnumerable<Genre>;
+}
+<div>
+	<h2 class="col-form-label">Add Game</h2>
+	<form asp-area="Admin" asp-controller="Game" asp-action="AddGame" method="post">
+		<div class="mb-3">
+			<label class="form-label">Game Name</label>
+			<input class="form-control" asp-for="@Model.Name" placeholder="Name" />
+			<span class="text-danger" asp-validation-for="@Model.Name"></span>
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Game Description</label>
+			<textarea class="form-control" asp-for="@Model.Description" placeholder="Description">
+
+			</textarea>
+			<span class="text-danger" asp-validation-for="@Model.Description"></span>
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Release</label>
+			<input class="form-control" type="date" asp-for="@Model.Released" placeholder="Release" />
+			<span class="text-danger" asp-validation-for="@Model.Released"></span>
+		</div>
+
+		<div class="form-group">
+			<label>Genres:</label>
+			<div class="checkbox-group">
+				@foreach (var genre in genreList!)
+				{
+					<div>
+						<label>@genre.Name</label>
+						<input type="checkbox"  name="SelectedGenreIds" value="@genre.Id" onclick="onCheckboxClick(this)"/>
+					</div>
+
+				}
+			</div>
+
+		</div>
+		<button type="submit" class="btn btn-primary">Create Game!</button>
+	</form>
+</div>
+
+<script>
+	function onCheckboxClick(checkbox) {
+		if (checkbox.checked) {
+			console.log(`Checkbox selected with value: ${checkbox.value}`);
+		} else {
+			console.log(`Checkbox deselected with value: ${checkbox.value}`);
+		}
+	}
+</script>
