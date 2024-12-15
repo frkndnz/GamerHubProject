@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using MyWebApplication.ViewModel;
+using MyWebApplication.ViewModel.Account;
 
 namespace MyWebApplication.Controllers
 {

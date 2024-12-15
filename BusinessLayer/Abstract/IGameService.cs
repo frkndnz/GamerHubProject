@@ -17,5 +17,7 @@ namespace BusinessLayer.Abstract
         public void AddGameDTO(AddGameDTO gameDTO);
         public void UpdateGame(EditGameDTO gameDTO);
         public EditGameDTO GetEditGameDTO(int id);
+
+        public GameDetailDTO GetGameDetailDTO(int id);
     }
 }

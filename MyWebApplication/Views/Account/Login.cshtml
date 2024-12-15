@@ -1,4 +1,4 @@
-@using MyWebApplication.ViewModel
+@using MyWebApplication.ViewModel.Account
 @{
 	Layout = null;
 	ViewData["Title"] = "LoginPage";
@@ -30,7 +30,7 @@
 					<button type="submit" class="btn btn-primary">Giriş Yap</button>
 				</div>
 				<div>
-					<a   class="btn btn-primary" asp-controller="Account" asp-action="Register">Kayıt Ol!</a>
+					<a class="btn btn-primary" asp-controller="Account" asp-action="Register">Kayıt Ol!</a>
 
 				</div>
 				<div class="text-danger" asp-validation-summary=ModelOnly>

@@ -2,6 +2,7 @@
 using BusinessLayer.Abstract;
 using DTOLayer.DTOs.GameDTOs;
 using MyWebApplication.Areas.Admin.ViewModel;
+using MyWebApplication.ViewModel.Game;
 
 namespace MyWebApplication.Mapping.AutoMapperProfile
 {
@@ -12,6 +13,7 @@ namespace MyWebApplication.Mapping.AutoMapperProfile
         {
             CreateMap<AddGameViewModel, AddGameDTO>().ReverseMap();
             CreateMap<EditGameViewModel, EditGameDTO>().ReverseMap();
+            CreateMap<GameDetailViewModel, GameDetailDTO>().ReverseMap(); 
         }
     }
 }

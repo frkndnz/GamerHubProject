@@ -39,6 +39,13 @@ namespace BusinessLayer.Concrete
             return editGameDto;
         }
 
+        public GameDetailDTO GetGameDetailDTO(int id)
+        {
+            var gameEntity = GetAllWithGenres().FirstOrDefault(g => g.Id == id);
+            var gameDetailDTO=_mapper.Map<GameDetailDTO>(gameEntity);
+            return gameDetailDTO;
+        }
+
         public void UpdateGame(EditGameDTO editGameDto)
         {
             var game= GetAllWithGenres().FirstOrDefault(g => g.Id == editGameDto.Id);
