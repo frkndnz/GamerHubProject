@@ -17,6 +17,6 @@ namespace DataAccessLayer.Abstract
         T? GetById(int id);
 
         List<T> GetListByFilter(Expression<Func<T,bool>> t);
-        IEnumerable<T> GetAllWithInclude(Expression<Func<T, object>> includeProperty);
+        
     }
 }

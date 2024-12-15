@@ -39,7 +39,7 @@ namespace DataAccessLayer.Repository
 
         public List<T> GetListByFilter(Expression<Func<T, bool>> t)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Where(t).ToList();
         }
         
         public void Insert(T t)
@@ -49,14 +49,10 @@ namespace DataAccessLayer.Repository
             _context.SaveChanges();
             
         }
-        public IEnumerable<T> GetAllWithInclude(Expression<Func<T, object>> includeProperty)
-        {
-            var _dbSet = _context.Set<T>();
-            return _dbSet.Include(includeProperty).ToList();
-        }
+       
         public void Update(T t)
         {
-            _context.Update(t);
+            _context.Set<T>().Update(t);
             _context.SaveChanges();
         }
         public void Save()

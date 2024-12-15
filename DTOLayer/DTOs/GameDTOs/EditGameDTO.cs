@@ -1,19 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer.Concrete
+namespace DTOLayer.DTOs.GameDTOs
 {
-    public class Game
+    public class EditGameDTO
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public  string? Name { get; set; }
         public string? ImageURL { get; set; }
         public string? Description { get; set; } = string.Empty;
         public DateTime Released { get; set; }
-        public float Rating { get; set; }
-        
-        public ICollection<Genre>? Genres { get; set; } = new List<Genre>();
+        public  List<int> SelectedGenreIds { get; set; }
     }
 }

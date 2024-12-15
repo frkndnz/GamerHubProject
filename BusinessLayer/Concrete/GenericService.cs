@@ -18,10 +18,7 @@ namespace BusinessLayer.Concrete
             _genericRepository = genericDal;
         }
 
-        public IEnumerable<T> GetAllWithInclude(Expression<Func<T, object>> includeProperty)
-        {
-            return _genericRepository.GetAllWithInclude(includeProperty);
-        }
+        
 
         public T? GetById(int id)
         {
@@ -42,6 +39,11 @@ namespace BusinessLayer.Concrete
         public  List<T> TGetList()
         {
             return _genericRepository.GetList();
+        }
+
+        public List<T> TGetListByFilter(Expression<Func<T, bool>> filter)
+        {
+            return _genericRepository.GetListByFilter(filter);
         }
 
         public void TUpdate(T t)

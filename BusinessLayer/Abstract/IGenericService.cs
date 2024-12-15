@@ -14,7 +14,9 @@ namespace BusinessLayer.Abstract
         List<T> TGetList();
 
         T? GetById(int id);
-        IEnumerable<T> GetAllWithInclude(Expression<Func<T, object>> includeProperty);
+
+        List<T> TGetListByFilter(Expression<Func<T, bool>> filter);
+        
     }
 
 }

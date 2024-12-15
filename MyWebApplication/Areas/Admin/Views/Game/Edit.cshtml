@@ -8,12 +8,23 @@
 @model EditGameViewModel
 
 <div>
-	<h2 class="col-form-label">Add Game</h2>
-	<form asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+	<h2 class="col-form-label">Edit Game</h2>
+	<form asp-area="Admin" asp-controller="Game" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
 		<div class="mb-3">
 			<label class="form-label">Game Name</label>
 			<input class="form-control" asp-for="@Model.Name" placeholder="Name" />
 			<span class="text-danger" asp-validation-for="@Model.Name"></span>
+		</div>
+		<div class="mb-3">
+			<label class="form-label fw-bold">Game Image</label>
+			<div class="mb-2">
+				<img src="~/images/@Model.ImageURL"
+					 class="card-img-top img-thumbnail"
+					 alt="@Model.Name Cover Image"
+					 style="max-width: 150px; max-height: 150px; object-fit: cover;">
+			</div>
+			<input class="form-control" type="file" asp-for="@Model.ImageFile" />
+			<span class="text-danger" asp-validation-for="@Model.ImageFile"></span>
 		</div>
 		<div class="mb-3">
 			<label class="form-label">Game Description</label>

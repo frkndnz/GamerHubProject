@@ -7,6 +7,10 @@ namespace MyWebApplication.Areas.Admin.ViewModel
     {
         [Required]
         public required string? Name { get; set; }
+        [Required]
+        [DataType(DataType.Upload)]
+        public IFormFile? ImageFile { get; set; }
+        public string? ImageURL { get; set; }
         public string? Description { get; set; } = string.Empty;
         public DateTime Released { get; set; }
         [Required]

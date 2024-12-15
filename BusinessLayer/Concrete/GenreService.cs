@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
 using EntityLayer.Concrete;
 
 namespace BusinessLayer.Concrete
 {
-    public class GenreManager : GenericService<Genre>
+    public class GenreService : GenericService<Genre>,IGenreService
     {
-        public GenreManager(IGenericRepository<Genre> genericDal) : base(genericDal)
+        public GenreService(IGenericRepository<Genre> genericDal) : base(genericDal)
         {
         }
     }

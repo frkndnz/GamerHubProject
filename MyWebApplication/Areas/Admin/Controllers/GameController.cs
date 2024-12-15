@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using DTOLayer.DTOs.GameDTOs;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,68 +19,63 @@ namespace MyWebApplication.Areas.Admin.Controllers
     [Area("Admin")]
     public class GameController : Controller
     {
-       private readonly ILogger<GameController> _logger;
-        private readonly GenreManager _genreManager;
-        private readonly GameManager _gameManager;
+        private readonly ILogger<GameController> _logger;
+        private readonly IGenreService _genreService;
+        private readonly IGameService _gameService;
+        private readonly IFileService _fileService;
+        private readonly IMapper _mapper;
 
-        public GameController(ILogger<GameController> logger, GenreManager genreManager, GameManager gameManager)
+        public GameController(ILogger<GameController> logger, IGenreService genreManager, IGameService gameManager, IFileService fileService, IMapper     mapper)
         {
             _logger = logger;
-            _genreManager = genreManager;
-            _gameManager = gameManager;
+            _genreService = genreManager;
+            _gameService = gameManager;
+            _fileService = fileService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var games = _gameManager.GetAllWithInclude(g => g.Genres);
+            var games = _gameService.GetAllWithGenres();
             return View(games);
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewBag.Genres = _genreManager.TGetList();
-
-            var game= _gameManager.GetAllWithInclude(g=>g.Genres).FirstOrDefault(g=>g.Id==id);
-            
-
-            EditGameViewModel model = new EditGameViewModel()
-            {
-                Id = game.Id,
-                Name = game.Name,
-                Description = game.Description,
-                Released = game.Released,
-                SelectedGenreIds = game.Genres.Select(g => g.Id).ToList()
-            };
-            return View(model);
+            ViewBag.Genres = _genreService.TGetList();
+            var editGameDto = _gameService.GetEditGameDTO(id);
+            var editGameViewModel=_mapper.Map<EditGameViewModel>(editGameDto);
+            return View(editGameViewModel);
         }
 
         [HttpPost]
 
-        public IActionResult Edit(EditGameViewModel model)
+        public async Task<IActionResult> Edit(EditGameViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var existingGameDTO=_gameService.GetEditGameDTO(model.Id);
+                var newEditGameDTO = _mapper.Map<EditGameDTO>(model);
 
-                var game = _gameManager.GetAllWithInclude(g => g.Genres).FirstOrDefault(g => g.Id == model.Id);
-                game.Name = model.Name;
-                game.Description = model.Description;
-                game.Released = model.Released;
-                game.Genres = new List<Genre>();
-               
-                foreach (var genreId in model.SelectedGenreIds)
+                if (model.ImageFile!=null)
                 {
-                    var genre = _genreManager.GetById(genreId);
-                    if (genre != null)
+                    if (model.ImageURL != null)
                     {
-                        game.Genres.Add(genre);
+                        _fileService.DeleteFile(existingGameDTO.ImageURL, "images");
                     }
+                    newEditGameDTO.ImageURL = await _fileService.SaveFile(model.ImageFile, "images", new string[] { ".jpg", ".png", ".jpeg" });
                 }
-                _gameManager.TUpdate(game);
+                else
+                {
+                    newEditGameDTO.ImageURL=existingGameDTO.ImageURL;
+                }
+                _gameService.UpdateGame(newEditGameDTO);
+
                 return RedirectToAction("Index", "Game", new { area = "Admin" });
             }
 
-            var values = _genreManager.TGetList();
+            var values = _genreService.TGetList();
             ViewBag.Genres = values;
             return View(model);
         }
@@ -86,52 +84,39 @@ namespace MyWebApplication.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddGame()
         {
-            var values = _genreManager.TGetList();
+            var values = _genreService.TGetList();
             ViewBag.Genres = values;
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddGame(AddGameViewModel model)
+        public async Task<IActionResult> AddGame(AddGameViewModel model)
         {
-
-            if (ModelState.IsValid )
+            if (ModelState.IsValid)
             {
-                
-                Game game = new Game()
-                {
-                    Description = model.Description,
-                    Name = model.Name,
-                    Released = model.Released,
-                    Rating = 0,
-                    
-                };
-                
-                _gameManager.TAdd(game);
-                foreach (var genreId in model.SelectedGenreIds)
-                {
-                    var genre = _genreManager.GetById(genreId);
-                    if (genre != null) 
-                    {
-                        game.Genres.Add(genre);
-                    }
-                }
-                _gameManager.TUpdate(game);
+                var gameDto = _mapper.Map<AddGameDTO>(model);
+                gameDto.ImageURL= await _fileService.SaveFile(model.ImageFile, "images", new string[] { ".jpg", ".png", ".jpeg" });
+                _gameService.AddGameDTO(gameDto);
                 return RedirectToAction("Index", "Home", new { area = "Admin" });
             }
 
-            var values = _genreManager.TGetList();
+            var values = _genreService.TGetList();
             ViewBag.Genres = values;
             return View(model);
         }
 
 
+
+
+
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var game = _gameManager.GetById(id);
-            if (game != null) {
-                _gameManager.TDelete(game);
+            var game = _gameService.GetById(id);
+            if (game != null)
+            {
+                _fileService.DeleteFile(game.ImageURL, "images");
+                _gameService.TDelete(game);
                 return Ok();
             }
             else
@@ -140,6 +125,6 @@ namespace MyWebApplication.Areas.Admin.Controllers
             }
         }
 
-       
+
     }
 }

@@ -2,6 +2,7 @@ using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
 using DataAccessLayer.Repository;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyWebApplication.Mapping.AutoMapperProfile;
+using BusinessLayer.Mapping.AutoMapperProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLogging(configure =>
@@ -43,10 +46,17 @@ builder.Services.AddMvc(config=>{
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
-builder.Services.AddScoped(typeof(GameManager));
-builder.Services.AddScoped(typeof(GenreManager));
+
+builder.Services.AddScoped(typeof(IGameService),typeof(GameService));
+builder.Services.AddScoped(typeof(IGameRepo),typeof(GameRepository));
+
+builder.Services.AddScoped(typeof(IGenreService), typeof(GenreService));
+builder.Services.AddScoped(typeof(IGenreRepo), typeof(GenreRepository));
+
+builder.Services.AddScoped(typeof(IFileService), typeof(FileService));
 
 
+builder.Services.AddAutoMapper(typeof(MapProfile).Assembly, typeof(BusinessMapProfile).Assembly);
 
 var app = builder.Build();
 

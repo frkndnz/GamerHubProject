@@ -11,16 +11,16 @@ namespace MyWebApplication.ViewComponents
 {
     public class GameListComponent : ViewComponent
     {
-        private readonly GameManager _gameManager;
+        private readonly IGameService _gameService;
 
-        public GameListComponent(GameManager gameManager)
+        public GameListComponent(IGameService gameService)
         {
-            _gameManager = gameManager;
+            _gameService = gameService;
         }
 
         public  IViewComponentResult Invoke(string search)
         {
-            var games= _gameManager.GetAllWithInclude(g=>g.Genres);
+            var games= _gameService.GetAllWithGenres();
             
             if(!string.IsNullOrEmpty(search))
             {
