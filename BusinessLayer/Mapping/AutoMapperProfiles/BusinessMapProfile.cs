@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using DTOLayer.DTOs.CommentDTOs;
 using DTOLayer.DTOs.GameDTOs;
 using DTOLayer.DTOs.GenreDTOs;
 using EntityLayer.Concrete;
@@ -27,6 +28,10 @@ namespace BusinessLayer.Mapping.AutoMapperProfiles
                 .ForMember(dest => dest.GenreDTOs, opt => opt.MapFrom(src => src.Genres));
 
 
+            CreateMap<Comment,CommentDTO>()
+                .ForMember(dest=>dest.UserName,opt=>opt.MapFrom(src=>src.AppUser.UserName));
+
+            CreateMap<AddCommentDTO, Comment>();
         }
     }
 }

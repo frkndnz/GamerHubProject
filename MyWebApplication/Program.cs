@@ -24,7 +24,7 @@ builder.Services.AddLogging(configure =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-// builder.Services.AddHttpClient<IApiService, GameApiService>();
+
 
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser,AppRole>(options=>{
@@ -52,6 +52,9 @@ builder.Services.AddScoped(typeof(IGameRepo),typeof(GameRepository));
 
 builder.Services.AddScoped(typeof(IGenreService), typeof(GenreService));
 builder.Services.AddScoped(typeof(IGenreRepo), typeof(GenreRepository));
+
+builder.Services.AddScoped(typeof(ICommentService), typeof(CommentService));
+builder.Services.AddScoped(typeof(ICommentRepo),typeof(CommentRepository));
 
 builder.Services.AddScoped(typeof(IFileService), typeof(FileService));
 

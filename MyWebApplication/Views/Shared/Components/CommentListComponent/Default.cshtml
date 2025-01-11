@@ -1,0 +1,31 @@
+﻿@using MyWebApplication.ViewModel.Comment
+
+@model List<CommentViewModel>
+<div id="comments-list" >
+
+	<div class="comments-section mb-3">
+		<h3 class="fw-bold">Yorumlar</h3>
+		@if (Model.Any())
+		{
+			<ul class="list-group">
+				@foreach (var comment in Model)
+				{
+					<li class="list-group-item d-flex align-items-start">
+						<div class="me-2">
+							<i class="bi bi-person-circle" style="font-size: 24px;"></i>
+						</div>
+						<div>
+							<strong>@comment.UserName</strong>
+							<p class="mb-0">@comment.Content</p>
+						</div>
+					</li>
+				}
+			</ul>
+		}
+		else
+		{
+			<p class="text-center text-muted">Henüz yorum eklenmemiş. İlk yorumu siz yapın!</p>
+		}
+	</div>
+
+</div>

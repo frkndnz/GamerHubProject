@@ -17,5 +17,6 @@ namespace DataAccessLayer.Concrete
         
         DbSet<Game> Games{get;set;}
         DbSet<Genre>Genres{get;set;}
+        DbSet<Comment> Comments{get;set;}
     }
 }

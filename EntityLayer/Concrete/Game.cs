@@ -15,5 +15,7 @@ namespace EntityLayer.Concrete
         public float Rating { get; set; }
         
         public ICollection<Genre>? Genres { get; set; } = new List<Genre>();
+
+        public ICollection<Comment> Comments { get; set; }= new List<Comment>();
     }
 }

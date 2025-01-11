@@ -15,9 +15,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewComponents\" />
     <Folder Include="Views\Shared\DefaultLayoutPartials\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\js\Comment\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\js\Areas\Admin\admin.js" />

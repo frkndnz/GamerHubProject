@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using BusinessLayer.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyWebApplication.ViewModel.Game;
 
 namespace MyWebApplication.Controllers
 {
+    [AllowAnonymous]
     public class GameController:Controller
     {
         private readonly IGameService _gameService;

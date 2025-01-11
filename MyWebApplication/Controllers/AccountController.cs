@@ -11,7 +11,7 @@ using MyWebApplication.ViewModel.Account;
 
 namespace MyWebApplication.Controllers
 {
-    public class AccountController:Controller
+    public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
@@ -31,27 +31,28 @@ namespace MyWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                AppUser user=new AppUser(){
-                    Email=model.Email,
-                    UserName=model.UserName,
-                    Name=model.Name,
-                    Surname=model.Surname
+                AppUser user = new AppUser()
+                {
+                    Email = model.Email,
+                    UserName = model.UserName,
+                    Name = model.Name,
+                    Surname = model.Surname
                 };
 
-                var result=await _userManager.CreateAsync(user,model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user,"User");
-                    return RedirectToAction("Index","Home");
+                    await _userManager.AddToRoleAsync(user, "User");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    foreach(var item in result.Errors)
+                    foreach (var item in result.Errors)
                     {
-                        ModelState.AddModelError("",item.Description);
+                        ModelState.AddModelError("", item.Description);
                     }
                 }
             }
@@ -69,30 +70,37 @@ namespace MyWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if(user==null)
+                if (user == null)
                 {
-                    ModelState.AddModelError("","Geçersiz giriş!");
+                    ModelState.AddModelError("", "Geçersiz giriş!");
                     return View(model);
                 }
 
-                var result =await _signInManager.PasswordSignInAsync(user,model.Password,false,false);
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("","Geçersiz giriş!");
+                    ModelState.AddModelError("", "Geçersiz giriş!");
                     return View(model);
                 }
             }
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 
-    
+
 }

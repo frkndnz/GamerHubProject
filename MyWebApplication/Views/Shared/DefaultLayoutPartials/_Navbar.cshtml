@@ -1,40 +1,55 @@
-  <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <!-- Site Logosu -->
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">GamerHub</a>
-        
-        <!-- Toggle Butonu (Mobil Görünüm) -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<header>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container">
+			<!-- Site Logosu -->
+			<a class="navbar-brand" asp-controller="Home" asp-action="Index">GamerHub</a>
 
-        <!-- Navbar İçeriği -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <!-- Anasayfa Linki -->
-                <li class="nav-item">
-                    <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <!-- İlan Ara Linki -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Oyun Ara</a>
-                </li>
-                
-            </ul>
+			<!-- Toggle Butonu (Mobil Görünüm) -->
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-            <!-- Sağ Taraf Kullanıcı Bağlantıları -->
-            <ul class="navbar-nav">
-                <!-- Giriş Yap Linki -->
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="Login">Giriş Yap</a>
-                </li>
-                <!-- Kayıt Ol Linki -->
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-    </header>
+			<!-- Navbar İçeriği -->
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav me-auto">
+					<!-- Anasayfa Linki -->
+					<li class="nav-item">
+						<a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+					</li>
+					<!-- İlan Ara Linki -->
+					<li class="nav-item">
+						<a class="nav-link" href="#">Oyun Ara</a>
+					</li>
+
+				</ul>
+
+				<!-- Sağ Taraf Kullanıcı Bağlantıları -->
+				<ul class="navbar-nav">
+					@if (User.Identity.IsAuthenticated)
+					{
+						<li class="nav-item">
+							<span class="nav-link">Merhaba,@User.Identity.Name</span>
+						</li>
+						<li class="nav-item">
+							<form method="post" asp-controller="Account" asp-action="Logout">
+								<button type="submit" class="btn btn-outline-danger">Logout</button>
+							</form>
+						</li>
+					}
+					else
+					{
+						<!-- Giriş Yap Linki -->
+						<li class="nav-item">
+							<a class="nav-link" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+						</li>
+						<!-- Kayıt Ol Linki -->
+						<li class="nav-item">
+							<a class="nav-link" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+						</li>
+
+					}
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
