@@ -21,10 +21,14 @@ namespace BusinessLayer.Concrete
             _mapper = mapper;
         }
 
-        public void AddComment(AddCommentDTO commentDTO)
+        public CommentDTO AddComment(AddCommentDTO commentDTO)
         {
             var commentEntity= _mapper.Map<Comment>(commentDTO);
             _commentRepository.Insert(commentEntity);
+
+            var comment = _commentRepository.GetCommentsWithUsers().FirstOrDefault(c => c.GameId == commentEntity.GameId);
+            var dto = _mapper.Map<CommentDTO>(comment);
+            return dto;
         }
 
         public List<CommentDTO> GetComments(int gameId)

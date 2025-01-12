@@ -8,6 +8,7 @@ namespace DTOLayer.DTOs.CommentDTOs
 {
     public class CommentDTO
     {
+        public DateTime CreatedAt { get; set; }
         public string? Content { get; set; }
         public string? UserName { get; set; }
     }

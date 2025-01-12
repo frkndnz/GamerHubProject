@@ -12,6 +12,6 @@ namespace BusinessLayer.Abstract
     {
         public List<CommentDTO> GetComments(int gameId);
 
-        public void AddComment(AddCommentDTO commentDTO);
+        public CommentDTO AddComment(AddCommentDTO commentDTO);
     }
 }

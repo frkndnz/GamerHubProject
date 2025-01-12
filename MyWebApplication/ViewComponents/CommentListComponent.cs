@@ -20,7 +20,8 @@ namespace MyWebApplication.ViewComponents
         public IViewComponentResult Invoke(int gameId,int? skip=0,int? take=5)
         {
             var commentsDtos= _commentService.GetComments(gameId);
-            var commentsViewModels=_mapper.Map<List<CommentViewModel>>(commentsDtos);
+            var commentsViewModels=_mapper.Map<List<CommentViewModel>>(commentsDtos)
+                .OrderByDescending(c=>c.CreatedAt);
 
             var totalCount= commentsViewModels.Count();
 

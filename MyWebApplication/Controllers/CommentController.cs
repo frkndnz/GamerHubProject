@@ -20,7 +20,7 @@ namespace MyWebApplication.Controllers
         }
 
         [HttpGet]
-        public IActionResult LoadComments(int gameId, int skip, int take)
+        public IActionResult GetCommentsComponent(int gameId, int skip=0, int take=5)
         {
             return ViewComponent("CommentListComponent", new { gameId, skip, take });
         }
@@ -30,6 +30,7 @@ namespace MyWebApplication.Controllers
         {
             var commentsDtos = _commentService.GetComments(gameId);
             var commentsViewModels = _mapper.Map<List<CommentViewModel>>(commentsDtos)
+                .OrderByDescending(c=>c.CreatedAt)
                 .Skip(skip)
                 .Take(take)
                 .ToList();
@@ -39,35 +40,47 @@ namespace MyWebApplication.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult AddComment(AddCommentViewModel model)
+        public IActionResult AddComment([FromForm]AddCommentViewModel model)
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return StatusCode(401);
+                return Unauthorized(new { message = "Bu işlem için giriş yapmalısınız." });
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var addCommentDto = _mapper.Map<AddCommentDTO>(model);
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+                return BadRequest(new { message = "Geçersiz form verisi.", errors });
+            }
 
+            try
+            {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
-                if (userId == null)
+                if (string.IsNullOrEmpty(userId))
                 {
-                    return Unauthorized();
+                    return Unauthorized(new { message = "Kullanıcı bilgisi bulunamadı." });
                 }
 
+                var addCommentDto = _mapper.Map<AddCommentDTO>(model);
                 addCommentDto.AppUserId = int.Parse(userId);
-                _commentService.AddComment(addCommentDto);
 
-                return Ok();
+                var commentDto = _commentService.AddComment(addCommentDto);
+                var commentViewModel = _mapper.Map<CommentViewModel>(commentDto);
 
+                return PartialView("~/Views/Shared/CommentPartials/_CommentListPartial.cshtml",
+                    new List<CommentViewModel> { commentViewModel });
             }
-            else
+            catch (Exception ex)
             {
+                
 
-                return BadRequest("Yorum geçerli değil!");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Yorum eklenirken bir hata oluştu."
+                });
             }
 
 

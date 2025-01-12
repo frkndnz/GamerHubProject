@@ -1,35 +1,46 @@
-﻿function submitComment(event) {
-    event.preventDefault();
-    console.log("submitComment çalıştı.");
-    var formdata = new FormData(document.getElementById('commentForm'));
+﻿
+$(document).ready(function () {
+    console.log("Script yüklendi");
+    const form = $("#commentForm");
+    const submitButton = $("#submitComment");
 
-    fetch('/Comment/AddComment', {
-        method: 'POST',
-        body: formdata
-    })
-        .then(response => {
-            if (response.ok) {
-                loadComment(formdata.get('GameId'));
+    if (form.length === 0) {
+        console.error("Comment form not found");
+        return;
+    }
 
+    submitButton.click(function () {
+        const formData = new FormData(form[0]);
+
+        $.ajax({
+            url: '/Comment/AddComment',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                submitButton.prop('disabled', true);
+            },
+            success: function (response) {
+
+                $('#commentList').prepend(response);
+
+                $.get('/Comment/GetCommentsComponent', {
+                    gameId: formData.get('GameId')
+                }, function (result) {
+                    $('#commentsComponent').html(result);
+                    form[0].reset();
+                });
+            },
+            error: function (xhr) {
+                if (xhr.status === 401) {
+                    alert("Bu işlem için giriş yapmalısınız!");
+                }
+                console.error(xhr.responseText);
+            },
+            complete: function () {
+                submitButton.prop('disabled', false);
             }
-            else if (response.status === 401) {
-                console.log("yakalandı!");
-                alert("Giriş yapmanız gerekiyor!");
-                window.location.href = '/Account/Login';
-            }
-            else {
-                return Promise.reject("Yorum ekleme başarısız.");
-            }
-        })
-        .catch(error => console.error('Hata:', error));
-};
-
-function loadComment(gameId) {
-
-    fetch(`/Comment/LoadComments?gameId=${gameId}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('comments-list').innerHTML = html; // Yorum listesini güncelle
-        })
-        .catch(error => console.error('Hata:', error));
-}
+        });
+    });
+});
