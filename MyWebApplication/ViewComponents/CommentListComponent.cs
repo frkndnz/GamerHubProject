@@ -17,12 +17,27 @@ namespace MyWebApplication.ViewComponents
             _mapper = mapper;
         }
 
-        public IViewComponentResult Invoke(int gameId)
+        public IViewComponentResult Invoke(int gameId,int? skip=0,int? take=5)
         {
             var commentsDtos= _commentService.GetComments(gameId);
             var commentsViewModels=_mapper.Map<List<CommentViewModel>>(commentsDtos);
 
-            return View(commentsViewModels);
+            var totalCount= commentsViewModels.Count();
+
+            var pagedComments=commentsViewModels.Skip(skip ?? 0)
+                .Take(take ?? 5)
+                .ToList();
+
+            var componentViewModel = new CommentsComponentViewModel
+            {
+                Comments = pagedComments,
+                TotalCount = totalCount,
+                CurrentCount = (skip ?? 0) + (take ?? 5),
+                GameId = gameId
+
+            };
+            
+            return View(componentViewModel);
         }
     }
 }

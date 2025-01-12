@@ -1,16 +1,36 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout="_DefaultLayout";
+    Layout = "_DefaultLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Game List</h1>
-    <!-- Search Form -->
-    <div class="container col-md-3 mt-3">
-     <form method="get" asp-controller="Home" asp-action="Index" class="d-flex" >
-        <input type="text" name="search" class="form-control mr-2" placeholder="Search Game" >
-        <button type="submit" class="btn btn-warning " style=" margin-left: 10;">Ara</button>
-    </form>
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold text-primary mb-3">Oyun Koleksiyonu</h1>
+            <p class="lead text-muted">En sevdiğiniz oyunları keşfedin ve koleksiyonunuza ekleyin</p>
+        </div>
     </div>
-    @await Component.InvokeAsync("GameListComponent",ViewBag.search)
+
+    <!-- Search Section -->
+    <div class="row mb-5">
+        <div class="col-lg-6 mx-auto">
+            <form method="get" asp-controller="Home" asp-action="Index" class="d-flex gap-2">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control form-control-lg"
+                           placeholder="Oyun ara..." aria-label="Oyun ara">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i> Ara
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Game List Section -->
+    <div class="row">
+        <div class="col-12">
+            @await Component.InvokeAsync("GameListComponent", ViewBag.search)
+        </div>
+    </div>
 </div>

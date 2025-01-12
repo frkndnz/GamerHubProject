@@ -1,31 +1,177 @@
-﻿@using MyWebApplication.ViewModel.Comment
+﻿@{
+	Layout = null;
+}
 
-@model List<CommentViewModel>
-<div id="comments-list" >
+@using MyWebApplication.ViewModel.Comment
+@model CommentsComponentViewModel
 
-	<div class="comments-section mb-3">
-		<h3 class="fw-bold">Yorumlar</h3>
-		@if (Model.Any())
-		{
-			<ul class="list-group">
-				@foreach (var comment in Model)
-				{
-					<li class="list-group-item d-flex align-items-start">
-						<div class="me-2">
-							<i class="bi bi-person-circle" style="font-size: 24px;"></i>
-						</div>
-						<div>
-							<strong>@comment.UserName</strong>
-							<p class="mb-0">@comment.Content</p>
-						</div>
-					</li>
-				}
-			</ul>
-		}
-		else
-		{
-			<p class="text-center text-muted">Henüz yorum eklenmemiş. İlk yorumu siz yapın!</p>
-		}
+<div id="comments-list" class="comments-container">
+	<div class="comments-header mb-4">
+		<h3 class="fw-bold">
+			<i class="fas fa-comments me-2"></i>
+			Yorumlar
+			@if (Model.TotalCount > 0)
+			{
+				<span class="comment-count">(@Model.TotalCount)</span>
+			}
+		</h3>
 	</div>
 
+	@if (Model.Comments.Any())
+	{
+		<div class="comments-list" id="commentsList">
+			<partial name="~/Views/Shared/CommentPartials/_CommentListPartial.cshtml" model="Model.Comments" />
+		</div>
+
+		@if (Model.TotalCount > Model.CurrentCount)
+		{
+			<div class="text-center mt-3">
+				<button id="loadMoreBtn" class="btn btn-primary"
+						data-current-count="@Model.CurrentCount"
+						data-total-count="@Model.TotalCount"
+						data-game-id="@Model.GameId">
+					Daha Fazla Yorum Göster
+				</button>
+			</div>
+		}
+
+
+	}
+	else
+	{
+		<div class="no-comments text-center py-5">
+			<i class="far fa-comment-dots fa-3x mb-3 text-muted"></i>
+			<p class="text-muted mb-0">Henüz yorum eklenmemiş. İlk yorumu siz yapın!</p>
+		</div>
+	}
 </div>
+
+<style>
+	.comments-container {
+		background: #fff;
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+	}
+
+	.comment-count {
+		font-size: 1rem;
+		color: #6c757d;
+		font-weight: normal;
+	}
+
+	.comments-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.comment-card {
+		display: flex;
+		gap: 1rem;
+		padding: 1rem;
+		border-radius: 0.75rem;
+		background: #f8f9fa;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+		.comment-card:hover {
+			transform: translateX(5px);
+			box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+		}
+
+	.avatar-circle {
+		width: 40px;
+		height: 40px;
+		background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		font-weight: bold;
+		font-size: 1.2rem;
+	}
+
+	.comment-content {
+		flex: 1;
+	}
+
+	.comment-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.5rem;
+	}
+
+	.comment-author {
+		color: #1e3c72;
+		font-weight: 600;
+	}
+
+	.comment-text {
+		color: #495057;
+		line-height: 1.5;
+	}
+
+	.no-comments {
+		color: #6c757d;
+	}
+
+		.no-comments i {
+			opacity: 0.5;
+		}
+
+	@@media (max-width: 768px) {
+		.comments-container {
+			padding: 1rem;
+		}
+
+		.comment-card {
+			padding: 0.75rem;
+		}
+
+		.avatar-circle {
+			width: 32px;
+			height: 32px;
+			font-size: 1rem;
+		}
+	}
+</style>
+
+
+
+<script>
+		$(document).ready(function() {
+		$("#loadMoreBtn").click(function() {
+			const button = $(this);
+			const currentCount = parseInt(button.data("current-count"));
+			const totalCount = parseInt(button.data("total-count"));
+			const gameId = parseInt(button.data("game-id"));
+
+			$.ajax({
+				url: "/Comment/LoadMore",
+				type: "GET",
+				data: {
+					gameId: gameId,
+					skip: currentCount,
+					take: 5
+				},
+				success: function(response) {
+					console.log("Incoming response:", response);
+					$("#commentsList").append(response);
+					const newCount = currentCount + 5;
+					button.data("current-count", newCount);
+
+					if(newCount >= totalCount) {
+						button.hide();
+					}
+				},
+				error: function(error) {
+					console.error("Yorumlar yüklenirken hata:", error);
+					alert("Yorumlar yüklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+				}
+			});
+		});
+	});
+</script>

@@ -1,6 +1,57 @@
-<footer class="border-top footer text-muted">
+<footer class="footer mt-auto py-4">
     <div class="container">
-        &copy; @DateTime.Today.Year - GamerHub
+        <div class="row align-items-center justify-content-between">
+            <div class="col-md-4">
+                <div class="d-flex align-items-center mb-3 mb-md-0">
+                    <i class="fas fa-gamepad text-primary me-2 fa-2x"></i>
+                    <h5 class="mb-0 text-white">GamerHub</h5>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <div class="social-links">
+                    <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-md-end">
+                <p class="text-white-50 mb-0">
+                    &copy; @DateTime.Today.Year GamerHub. Tüm haklarý saklýdýr.
+                </p>
+            </div>
+        </div>
     </div>
 </footer>
 
+<style>
+    .footer {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    }
+
+    .social-links a {
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+
+        .social-links a:hover {
+            color: #007bff !important;
+            transform: translateY(-3px);
+        }
+
+    @@media (max-width: 768px) {
+        .footer .col-md-4
+
+    {
+        text-align: center !important;
+        margin-bottom: 1rem;
+    }
+
+    .footer .col-md-4:last-child {
+        margin-bottom: 0;
+    }
+
+    }
+</style>

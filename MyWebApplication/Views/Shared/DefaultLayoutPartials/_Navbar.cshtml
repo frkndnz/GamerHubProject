@@ -1,55 +1,139 @@
+<style>
+    .custom-navbar {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        padding: 1rem 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .nav-link {
+        position: relative;
+        padding: 0.5rem 1rem;
+        transition: color 0.3s ease;
+    }
+
+        .nav-link:not(.btn):after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:not(.btn):hover:after {
+            width: 100%;
+        }
+
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        border-radius: 0.5rem;
+    }
+
+    .dropdown-item {
+        padding: 0.7rem 1.5rem;
+        transition: all 0.2s ease;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+    .btn-outline-light {
+        border-width: 2px;
+    }
+
+        .btn-outline-light:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+    @@media (max-width: 991.98px) {
+        .navbar-nav .btn {
+            margin: 0.5rem 0;
+            display: block;
+            width: 100%;
+        }
+    }
+</style>
+
 <header>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="container">
-			<!-- Site Logosu -->
-			<a class="navbar-brand" asp-controller="Home" asp-action="Index">GamerHub</a>
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-gamepad me-2"></i>
+                <span class="fw-bold">GamerHub</span>
+            </a>
 
-			<!-- Toggle Butonu (Mobil Görünüm) -->
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+            <!-- Toggle Button -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-			<!-- Navbar İçeriği -->
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav me-auto">
-					<!-- Anasayfa Linki -->
-					<li class="nav-item">
-						<a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
-					</li>
-					<!-- İlan Ara Linki -->
-					<li class="nav-item">
-						<a class="nav-link" href="#">Oyun Ara</a>
-					</li>
+            <!-- Navbar Content -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-home me-1"></i> Anasayfa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-search me-1"></i> Oyun Ara
+                        </a>
+                    </li>
+                </ul>
 
-				</ul>
-
-				<!-- Sağ Taraf Kullanıcı Bağlantıları -->
-				<ul class="navbar-nav">
-					@if (User.Identity.IsAuthenticated)
-					{
-						<li class="nav-item">
-							<span class="nav-link">Merhaba,@User.Identity.Name</span>
-						</li>
-						<li class="nav-item">
-							<form method="post" asp-controller="Account" asp-action="Logout">
-								<button type="submit" class="btn btn-outline-danger">Logout</button>
-							</form>
-						</li>
-					}
-					else
-					{
-						<!-- Giriş Yap Linki -->
-						<li class="nav-item">
-							<a class="nav-link" asp-controller="Account" asp-action="Login">Giriş Yap</a>
-						</li>
-						<!-- Kayıt Ol Linki -->
-						<li class="nav-item">
-							<a class="nav-link" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
-						</li>
-
-					}
-				</ul>
-			</div>
-		</div>
-	</nav>
+                <!-- User Authentication -->
+                <ul class="navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i>
+                                @User.Identity.Name
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Favorilerim</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item me-2">
+                            <a class="nav-link btn btn-outline-light btn-sm px-3" asp-controller="Account" asp-action="Login">
+                                <i class="fas fa-sign-in-alt me-1"></i> Giriş Yap
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary btn-sm px-3" asp-controller="Account" asp-action="Register">
+                                <i class="fas fa-user-plus me-1"></i> Kayıt Ol
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>

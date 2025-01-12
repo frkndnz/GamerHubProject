@@ -1,0 +1,25 @@
+﻿@using MyWebApplication.ViewModel.Comment
+
+@model List<CommentViewModel>
+
+@foreach (var comment in Model)
+{
+	<div class="comment-card">
+		<div class="comment-avatar">
+			<div class="avatar-circle">
+				@comment.UserName.Substring(0, 1).ToUpper()
+			</div>
+		</div>
+		<div class="comment-content">
+			<div class="comment-header">
+				<h6 class="comment-author mb-0">@comment.UserName</h6>
+				<small class="text-muted">
+					<i class="far fa-clock me-1"></i>
+					@* Eğer tarih bilgisi eklemek isterseniz *@
+					@* @comment.CreatedDate.ToString("dd MMM yyyy") *@
+				</small>
+			</div>
+			<p class="comment-text mb-0">@comment.Content</p>
+		</div>
+	</div>
+}

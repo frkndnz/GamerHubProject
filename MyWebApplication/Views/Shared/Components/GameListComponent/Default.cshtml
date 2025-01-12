@@ -1,27 +1,37 @@
 @model IEnumerable<Game>
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Oyunlarým</h2>
+<div class="container">
     <div class="row g-4">
         @foreach (var game in Model)
         {
-            <div class="col-md-3">
-                <div class="card text-white bg-dark  shadow-sm h-100">
-                     <img src="~/images/@game.ImageURL" class="card-img-top" alt="@game.Name Cover Image"> 
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@game.Name</h5>
-                        <p class="card-text mb-1"><strong>Rating:</strong> @game.Rating</p>
-                        <p class="card-text mb-1"><strong>Released:</strong> @game.Released.ToShortDateString()</p>
-                        <div>
-                            <strong>Genres:</strong>
-                            <ul class="list-unstyled">
-                                @foreach (var genre in game.Genres)
-                                {
-                                    <li>@genre.Name</li>
-                                }
-                            </ul>
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="card game-card h-100 bg-dark text-white border-0 shadow-lg hover-effect">
+                    <div class="position-relative">
+                        <img src="~/images/@game.ImageURL" class="card-img-top object-fit-cover" alt="@game.Name Cover Image" style="height: 200px;">
+                        <div class="position-absolute top-0 end-0 m-2">
+                            <span class="badge bg-primary rounded-pill">
+                                <i class="fas fa-star text-warning"></i> @game.Rating
+                            </span>
                         </div>
-                        <a href="/Game/Details/@game.Id" class="btn btn-light mt-auto">Details</a>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold text-primary">@game.Name</h5>
+
+                        <div class="mb-2 text-muted small">
+                            <i class="far fa-calendar-alt"></i> @game.Released.ToShortDateString()
+                        </div>
+
+                        <div class="genres mb-3">
+                            @foreach (var genre in game.Genres)
+                            {
+                                <span class="badge bg-secondary me-1 mb-1">@genre.Name</span>
+                            }
+                        </div>
+
+                        <a href="/Game/Details/@game.Id" class="btn btn-outline-primary mt-auto stretched-link">
+                            <i class="fas fa-info-circle"></i> Detaylarý Gör
+                        </a>
                     </div>
                 </div>
             </div>
@@ -29,3 +39,31 @@
     </div>
 </div>
 
+<style>
+    .game-card {
+        transition: all 0.3s ease;
+        background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+        }
+
+    .card-img-top {
+        border-top-left-radius: calc(0.375rem - 1px);
+        border-top-right-radius: calc(0.375rem - 1px);
+    }
+
+    .hover-effect {
+        overflow: hidden;
+    }
+
+        .hover-effect img {
+            transition: transform 0.5s ease;
+        }
+
+        .hover-effect:hover img {
+            transform: scale(1.05);
+        }
+</style>

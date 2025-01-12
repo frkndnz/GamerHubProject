@@ -20,10 +20,23 @@ namespace MyWebApplication.Controllers
         }
 
         [HttpGet]
-        public IActionResult LoadComments(int gameId)
+        public IActionResult LoadComments(int gameId, int skip, int take)
         {
-            return ViewComponent("CommentListComponent", new { gameId });
+            return ViewComponent("CommentListComponent", new { gameId, skip, take });
         }
+
+        [HttpGet]
+        public IActionResult LoadMore(int gameId, int skip, int take)
+        {
+            var commentsDtos = _commentService.GetComments(gameId);
+            var commentsViewModels = _mapper.Map<List<CommentViewModel>>(commentsDtos)
+                .Skip(skip)
+                .Take(take)
+                .ToList();
+
+            return PartialView("~/Views/Shared/CommentPartials/_CommentListPartial.cshtml", commentsViewModels);
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public IActionResult AddComment(AddCommentViewModel model)
